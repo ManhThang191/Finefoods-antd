@@ -23,7 +23,6 @@ export const StoreForm = (props: Props) => {
   } = useStoreForm({
     action: props.action,
   });
-
   return (
     <Spin spinning={formLoading}>
       <Row gutter={16} wrap>

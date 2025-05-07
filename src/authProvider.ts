@@ -15,9 +15,11 @@ export const authProvider: AuthProvider = {
   },
   register: async ({ email, password }) => {
     try {
-      await authProvider.login({ email, password });
+      // call api register
+      // -> success
       return {
         success: true,
+        redirectTo: '/login',
       };
     } catch (error) {
       return {

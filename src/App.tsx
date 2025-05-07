@@ -40,12 +40,15 @@ import {
 import { StoreCreate, StoreEdit, StoreList } from './pages/stores';
 import { CategoryList } from './pages/categories';
 import { useTranslation } from 'react-i18next';
-import { Header, Title } from './components';
+import { Title } from './components';
 import { BikeWhiteIcon } from './components/icons';
 import { ConfigProvider } from './context';
 import { useAutoLoginForDemo } from './hooks';
 
 import '@refinedev/antd/dist/reset.css';
+import { SiderCustom } from './components/layout/sider';
+import { HeaderCustom } from './components/layout/header';
+import { RegisterPage } from './pages/auth/register';
 
 const App: React.FC = () => {
   // This hook is used to automatically login the user.
@@ -151,9 +154,14 @@ const App: React.FC = () => {
                     key="authenticated-routes"
                     fallback={<CatchAllNavigate to="/login" />}
                   >
-                    <ThemedLayoutV2 Header={Header} Title={Title}>
+                    <ThemedLayoutV2
+                      Header={HeaderCustom}
+                      Title={Title}
+                      Sider={SiderCustom}
+                    >
                       <div
                         style={{
+                          // backgroundColor: 'red',
                           maxWidth: '1200px',
                           marginLeft: 'auto',
                           marginRight: 'auto',
@@ -241,20 +249,7 @@ const App: React.FC = () => {
                     />
                   }
                 />
-                <Route
-                  path="/register"
-                  element={
-                    <AuthPage
-                      type="register"
-                      formProps={{
-                        initialValues: {
-                          email: 'demo@refine.dev',
-                          password: 'demodemo',
-                        },
-                      }}
-                    />
-                  }
-                />
+                <Route path="/register" element={<RegisterPage />} />
                 <Route
                   path="/forgot-password"
                   element={<AuthPage type="forgotPassword" />}
@@ -268,7 +263,7 @@ const App: React.FC = () => {
               <Route
                 element={
                   <Authenticated key="catch-all">
-                    <ThemedLayoutV2 Header={Header} Title={Title}>
+                    <ThemedLayoutV2 Header={HeaderCustom} Title={Title}>
                       <Outlet />
                     </ThemedLayoutV2>
                   </Authenticated>

@@ -28,10 +28,12 @@ import {
 import { useTranslation } from 'react-i18next';
 import debounce from 'lodash/debounce';
 
-import { useConfigProvider } from '../../context';
-import { IconMoon, IconSun } from '../../components/icons';
-import type { IOrder, IStore, ICourier, IIdentity } from '../../interfaces';
+import { useConfigProvider } from '../../../context';
+import { IconMoon, IconSun } from '../../icons';
+import type { IOrder, IStore, ICourier, IIdentity } from '../../../interfaces';
 import { useStyles } from './styled';
+import { FilterDropdown } from '@refinedev/antd';
+import { Select } from 'antd/lib';
 
 const { Header: AntdHeader } = AntdLayout;
 const { useToken } = theme;
@@ -48,7 +50,7 @@ interface IOptions {
   options: IOptionGroup[];
 }
 
-export const Header: React.FC = () => {
+export const HeaderCustom: React.FC = () => {
   const { token } = useToken();
   const { styles } = useStyles();
   const { mode, setMode } = useConfigProvider();
@@ -250,7 +252,7 @@ export const Header: React.FC = () => {
               <Text ellipsis className={styles.userName}>
                 {user?.name}
               </Text>
-              <Avatar size="large" src={user?.avatar} alt={user?.name} />
+              <Avatar size="large" src={user?.avatar} alt={user?.name}></Avatar>
             </Space>
           </Space>
         </Col>

@@ -7,26 +7,16 @@ import {
   useNavigation,
 } from '@refinedev/core';
 import {
-  List,
   useTable,
   DateField,
   FilterDropdown,
   getDefaultSortOrder,
   ExportButton,
 } from '@refinedev/antd';
-import {
-  Table,
-  Avatar,
-  Typography,
-  theme,
-  InputNumber,
-  Input,
-  Select,
-  Button,
-} from 'antd';
+import { Table, Avatar, Typography, Input, Select, Button, Flex } from 'antd';
 
-import type { IUser, IUserFilterVariables } from '../../interfaces';
-import { EyeOutlined, SearchOutlined } from '@ant-design/icons';
+import type { IUser } from '../../interfaces';
+import { EyeOutlined } from '@ant-design/icons';
 import { PaginationTotal, UserStatus } from '../../components';
 import type { PropsWithChildren } from 'react';
 import { useLocation } from 'react-router';
@@ -36,12 +26,11 @@ export const CustomerList = ({ children }: PropsWithChildren) => {
   const { pathname } = useLocation();
   const { showUrl } = useNavigation();
   const t = useTranslate();
-  const { token } = theme.useToken();
 
-  const { tableProps, filters, sorters } = useTable<
+  const { tableProps, filters, sorters, setFilters } = useTable<
     IUser,
     HttpError,
-    IUserFilterVariables
+    { fullName_like: string }
   >({
     filters: {
       initial: [
@@ -80,12 +69,29 @@ export const CustomerList = ({ children }: PropsWithChildren) => {
   });
 
   return (
-    <List
-      breadcrumb={false}
-      headerProps={{
-        extra: <ExportButton onClick={triggerExport} loading={isLoading} />,
-      }}
-    >
+    <div>
+      <Flex justify="space-between">
+        <div
+          // className="search-input"
+          style={{
+            marginBottom: '10px',
+          }}
+        >
+          <Input.Search
+            defaultValue={getDefaultFilter('fullName', filters, 'contains')}
+            onSearch={(value) => {
+              setFilters([
+                {
+                  field: 'fullName',
+                  operator: 'contains',
+                  value: value,
+                },
+              ]);
+            }}
+          />
+        </div>
+        <ExportButton onClick={triggerExport} loading={isLoading} />
+      </Flex>
       <Table
         {...tableProps}
         rowKey="id"
@@ -109,23 +115,6 @@ export const CustomerList = ({ children }: PropsWithChildren) => {
             >
               #{value}
             </Typography.Text>
-          )}
-          filterIcon={(filtered) => (
-            <SearchOutlined
-              style={{
-                color: filtered ? token.colorPrimary : undefined,
-              }}
-            />
-          )}
-          defaultFilteredValue={getDefaultFilter('orderNumber', filters, 'eq')}
-          filterDropdown={(props) => (
-            <FilterDropdown {...props}>
-              <InputNumber
-                addonBefore="#"
-                style={{ width: '100%' }}
-                placeholder={t('orders.filter.id.placeholder')}
-              />
-            </FilterDropdown>
           )}
         />
         <Table.Column
@@ -223,6 +212,6 @@ export const CustomerList = ({ children }: PropsWithChildren) => {
         />
       </Table>
       {children}
-    </List>
+    </div>
   );
 };

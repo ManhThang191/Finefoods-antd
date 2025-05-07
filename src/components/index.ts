@@ -1,4 +1,4 @@
-export * from './header';
+export * from './layout/header';
 export * from './title';
 export * from './order/status';
 export * from './icons';
